@@ -1,0 +1,63 @@
+# Created by Luis Enrique Fuentes Plata
+
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: (POC) Application Triggers a lambda execution after an object is inserted in an S3 bucket.
+
+Parameters:
+  BucketName:
+    Type: String
+    Default: YourBucketName
+
+Globals:
+  Function:
+    MemorySize: 128
+    Timeout: 100
+
+Resources:
+
+  S3Bucket:
+    Type: 'AWS::S3::Bucket'
+    Properties:
+      #BucketName: 'domfp13-s3-bucket-poc'
+      BucketName: !Ref BucketName
+      AccessControl: Private
+
+  ProcessingFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: FTP-Event-OracleCloud
+      Description: After a file is uploaded to an S3 bucket, this event causes the execution of FTP-Event-OracleCloud
+      PackageType: Image
+      Policies:
+        - S3ReadPolicy:
+            BucketName: '*' #This is not to cause a circular dependency between resources, AWS::IAM::ROLE created by SAM for ProcessingFunction doesn't need to rely on a specific bucket
+      Events:
+        FileUpload:
+          Type: S3
+          Properties:
+            Bucket: !Ref S3Bucket
+            Events: 's3:ObjectCreated:*'
+            Filter:
+              S3Key:
+                Rules:
+                  - Name: suffix
+                    Value: '.csv'
+    Metadata:
+      DockerTag: python-runner
+      DockerContext: ./transformation
+      Dockerfile: Dockerfile
+
+  ProcessingFunctionLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub /aws/lambda/${ProcessingFunction}
+      RetentionInDays: 7
+
+  AllowS3ToCallLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: 'lambda:InvokeFunction'
+      FunctionName: !Ref ProcessingFunction
+      Principal: s3.amazonaws.com
+      SourceArn: !GetAtt S3Bucket.Arn
