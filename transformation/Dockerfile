@@ -5,7 +5,8 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
 COPY app.py requirements.txt ./
-RUN python3.7 -m pip install -r requirements.txt -t .
+RUN /var/lang/bin/python3.7 -m pip install --upgrade pip \ 
+    && python3.7 -m pip install -r requirements.txt -t .
 
 COPY src ./src
 

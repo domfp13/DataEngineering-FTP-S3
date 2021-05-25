@@ -2,8 +2,7 @@
 # -*- coding: utf-8 -*-
 # Luis Enrique Fuentes Plata
 
-import contextlib, os, boto3
-from typing import Optional
+import boto3
 from pathlib import Path
 
 def get_client():
