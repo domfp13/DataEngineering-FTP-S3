@@ -10,10 +10,10 @@ This project contains source code and supporting files for a serverless applicat
 The application uses several AWS resources, including Lambda Function, S3 bucket, CloudWatch logs, IAM policies, etc. These resources are defined in the `template.yaml` file in this project. You can update the template to add AWS resources through the same deployment process that updates your application code. The code is package in a container that extends the official AWS python 3.7 image.
 
 ### Architecture Diagram
-![](resources/ArchiDiagram.png)
+![Screenshot 2021-05-27 at 10 43 39](https://user-images.githubusercontent.com/7782876/119795152-7f20c700-bed8-11eb-8320-17c170a731d6.png)
 
 ### Class Diagram
-![](resources/ClassDiagrm.png)
+![Screenshot 2021-05-27 at 10 45 19](https://user-images.githubusercontent.com/7782876/119795364-b000fc00-bed8-11eb-935b-002120a38514.png)
 
 ## Use the SAM CLI to build and test locally
 
