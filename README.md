@@ -65,6 +65,8 @@ CloudFormation will need 4 variables, you will need to fill out these variables 
 * REGION=<aws_region>
 * IMAGE-REPOSITORY=<your_ecr_uri>
 * BUCKETNAME=<globally_unique_bucket_name>
+* TOPICNAME=<name_of_sns_topic_that_will_be_created>
+* ENDPOINTEMAIL=<email_address_for_error_notification>
 
 Once you fill out these variables, the next step is to build your application
 

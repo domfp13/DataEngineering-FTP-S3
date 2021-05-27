@@ -2,11 +2,9 @@
 # -*- coding: utf-8 -*-
 # Luis Enrique Fuentes Plata
 
-from typing import Optional
 from pathlib import Path
 import logging
 import pandas as pd
-import numpy as np
 from abc import ABC, abstractmethod
 
 class File(ABC):
