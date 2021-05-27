@@ -39,7 +39,6 @@ buildcompose: ## (Local Testing): Docker-Compose up
 .PHONY: package
 package: ## (Cloud): Package code
 	@ sam build
-	# @ sam package --template-file .aws-sam/build/template.yaml --s3-bucket <YOUR_BUCKET> --region us-east-1 --output-template-file packaged.yaml
 	@ sam package --output-template-file packaged-template.yaml \
 		--region ${REGION} \
 		--image-repository ${IMAGE-REPOSITORY}
@@ -48,7 +47,7 @@ package: ## (Cloud): Package code
 deploy: ## (Cloud): Deploy code
 	@ sam deploy \
 		--template-file packaged-template.yaml \
-		--parameter-overrides BucketName=${BUCKETNAME} \
+		--parameter-overrides BucketName=${BUCKETNAME} TopicName=${TOPICNAME} EndpointEmail=${ENDPOINTEMAIL} \
 		--stack-name ${STACK-NAME} \
 		--capabilities CAPABILITY_IAM \
 		--region ${REGION} \
@@ -56,6 +55,7 @@ deploy: ## (Cloud): Deploy code
 
 PHONY: undeploy
 undeploy: ## (Cloud): Undeploy code
+	@ aws s3 rm --recursive s3://${BUCKETNAME}/
 	@ aws cloudformation delete-stack --stack-name ${STACK-NAME}
 
 help:

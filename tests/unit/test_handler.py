@@ -2,7 +2,8 @@ import json, pytest
 #from transformation.app import lambda_handler
 
 from transformation.src.GenericFunctions import (
-    get_path, get_client
+    get_path, get_s3_client, get_sns_client,
+    get_sns_topic_arn
 )
 
 @pytest.fixture()
@@ -63,9 +64,22 @@ def test_get_path():
     from pathlib import Path
     assert type(get_path('Allegis_test.csv')) == type(Path())
 
-def test_get_client():
+def test_get_s3_client():
     """Testing if the function if returning the same type of object
     """
     import boto3_type as bt
-    client = get_client()
+    client = get_s3_client()
     assert bt.client.istype(client, "s3")
+
+def test_get_sns_client():
+    """Testing if the function if returning the same type of object
+    """
+    import boto3_type as bt
+    client = get_sns_client()
+    assert bt.client.istype(client, "sns")
+
+def test_get_sns_topic_arn():
+    """Validate if the arn is somehow valid
+    """
+    topic = get_sns_topic_arn()
+    assert 'arn:aws:sns:' in topic

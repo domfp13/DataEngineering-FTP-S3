@@ -8,6 +8,12 @@ Parameters:
   BucketName:
     Type: String
     Default: YourBucketName
+  TopicName:
+    Type: String
+    Default: YourTopicName
+  EndpointEmail:
+    Type: String
+    Default: YourEmail
 
 Globals:
   Function:
@@ -19,9 +25,16 @@ Resources:
   S3Bucket:
     Type: 'AWS::S3::Bucket'
     Properties:
-      #BucketName: 'domfp13-s3-bucket-poc'
       BucketName: !Ref BucketName
       AccessControl: Private
+
+  SNSTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: !Ref TopicName
+      Subscription:
+        - Endpoint: !Ref EndpointEmail
+          Protocol: email
 
   ProcessingFunction:
     Type: AWS::Serverless::Function
@@ -32,6 +45,8 @@ Resources:
       Policies:
         - S3ReadPolicy:
             BucketName: '*' #This is not to cause a circular dependency between resources, AWS::IAM::ROLE created by SAM for ProcessingFunction doesn't need to rely on a specific bucket
+        - SNSPublishMessagePolicy:
+            TopicName: !GetAtt SNSTopic.TopicName
       Events:
         FileUpload:
           Type: S3
@@ -43,6 +58,9 @@ Resources:
                 Rules:
                   - Name: suffix
                     Value: '.csv'
+      Environment:
+        Variables:
+          SNS_TOPIC_ARN: !Ref SNSTopic
     Metadata:
       DockerTag: python-runner
       DockerContext: ./transformation
