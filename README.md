@@ -50,6 +50,8 @@ This repository also includes a Makefile so this complexity gets solve just by r
 ftp_event_driven$ make help
 ```
 
+**Important:** Before testing locally deploy the application and get the arn of the sns service and add it to the GenericFunctions.py get_sns_topic_arn decorator function.
+
 ## Deploy the application
 CloudFormation will need a few variables in order to create the resources, the first thing you will need is an Elastic Cloud Repository, this will be used to host the container image, to create an ECR repository run the following command, and copy the URI (IMAGE-REPOSITORY) that its generated.
 ```bash

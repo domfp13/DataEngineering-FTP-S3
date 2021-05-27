@@ -49,9 +49,9 @@ def get_path(file_name:str) -> Path:
 
 def decorator_get_sns_topic_arn(function):
     def wrapper():
-        return ''
+        return '<ADD_THE_SNS_ARN_HERE_WHILE_TESTING_LOCALLY>'
     return wrapper
-@decorator_get_sns_topic_arn
+#@decorator_get_sns_topic_arn
 def get_sns_topic_arn() -> str:
     """Getting the SNS Topic ARN, if running locally, you must activate the decorator and add the arn
         that is generated after the service has been deployed through cloudformation.
