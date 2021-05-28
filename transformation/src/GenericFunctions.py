@@ -14,13 +14,13 @@ def get_s3_client():
     """
     return boto3.client('s3')
 
-def get_sns_client():
+def get_sns_client(region_name:str='us-east-1'):
     """This function returns a boto3.client for sns.
 
     Returns:
     [boto3.client]: boto3.client object.
     """
-    return boto3.client('sns')
+    return boto3.client('sns', region_name=region_name)
 
 def decorator_get_path(function):
     """Returns a pathlib.Path object, since this is being run in a container the Path is using the /tmp directory,
