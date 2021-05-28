@@ -60,4 +60,4 @@ def get_sns_topic_arn() -> str:
     if sns_topic_arn:
         return sns_topic_arn
     else:
-        return 'arn:aws:sns:us-east-1:'
+        return 'arn:aws:sns:<REGION>:<NAME>'
