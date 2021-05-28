@@ -1,6 +1,7 @@
 .git
 .DS_Store
 .gitignore
+.github/
 README.md
 .env
 Makefile
